@@ -2,7 +2,6 @@
 import { defineConfig, fontProviders } from "astro/config";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
-import swup from "@swup/astro";
 import showTailwindcssBreakpoint from "astro-show-tailwindcss-breakpoint";
 
 import tailwindcss from "@tailwindcss/vite";
@@ -11,7 +10,7 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   site: "https://example.com",
 
-  integrations: [mdx(), sitemap(), showTailwindcssBreakpoint(), swup()],
+  integrations: [mdx(), sitemap(), showTailwindcssBreakpoint()],
 
   vite: {
     plugins: [tailwindcss()],
