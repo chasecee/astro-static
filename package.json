@@ -4,7 +4,6 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "start": "astro preview --host",
     "build": "astro build",
     "deploy": "astro build && wrangler pages deploy",
     "preview": "astro preview",

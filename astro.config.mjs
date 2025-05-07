@@ -13,10 +13,6 @@ export default defineConfig({
   integrations: [mdx(), sitemap(), showTailwindcssBreakpoint()],
 
   vite: {
-    preview: {
-      host: true,
-      allowedHosts: ["astro-static-production.up.railway.app"],
-    },
     plugins: [tailwindcss()],
   },
   experimental: {
