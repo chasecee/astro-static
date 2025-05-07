@@ -1,0 +1,41 @@
+name: Deploy to Cloudflare Pages
+
+on:
+  push:
+    branches:
+      - main # Or your production branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      deployments: write # Required for the action to create deployments
+    name: Deploy
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Or your project's Node.js version
+
+      - name: Install dependencies
+        run: npm install # Or yarn install / pnpm install
+
+      - name: Build Astro site
+        run: npm run build # This creates the ./dist directory
+
+      - name: Publish to Cloudflare Pages
+        uses: cloudflare/pages-action@v1
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          projectName: "astro-static" # Your project name in wrangler.toml or here
+          directory: "dist" # Your build output directory
+          # Optional: Branch to deploy to (defaults to the branch triggering the workflow)
+          # branch: 'main'
+          # Optional: if you want to use a specific version of wrangler
+          # wranglerVersion: '3'
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }} # Optional, for GitHub Deployments integration

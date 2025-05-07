@@ -1,0 +1,3 @@
+name = "astro-static" # Your Cloudflare Pages project name
+compatibility_date = "2024-01-01" # Adjust as needed, see wrangler docs
+pages_build_output_dir = "dist" # Specify the directory of static files to upload 
