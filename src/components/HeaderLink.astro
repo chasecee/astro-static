@@ -9,16 +9,50 @@ const subpath = pathname.match(/[^\/]+/g);
 const isActive = href === pathname || href === '/' + (subpath?.[0] || '');
 ---
 
-<a href={href} class:list={[className, { active: isActive }]} {...props}>
+<a href={href} class:list={[className, { active: isActive }]} {...props} data-header-link>
 	<slot />
 </a>
+<script>
+	function updateActiveLinks() {
+		const currentPathname = window.location.pathname.replace(import.meta.env.BASE_URL, '');
+		const links = document.querySelectorAll('[data-header-link]');
+		links.forEach(link => {
+			const linkHref = link.getAttribute('href');
+			// Normalize both pathnames to ensure consistent comparison (e.g. ensure leading/trailing slashes are handled uniformly)
+			const normalizePath = (path: string) => path.startsWith('/') ? path : '/' + path;
+			const normalizedCurrentPathname = normalizePath(currentPathname).replace(/\/+$/, ''); // remove trailing slash
+			const normalizedLinkHref = normalizePath(linkHref!).replace(/\/+$/, ''); // remove trailing slash
+
+			// Replicate the server-side subpath logic for client-side
+			const currentSubpath = normalizedCurrentPathname.substring(1).match(/[^\/]+/g);
+			const isActiveClient = normalizedLinkHref === normalizedCurrentPathname || normalizedLinkHref === '/' + (currentSubpath?.[0] || '');
+
+			if (isActiveClient) {
+				link.classList.add('active');
+			} else {
+				link.classList.remove('active');
+			}
+		});
+	}
+
+	// Run on initial page load
+	document.addEventListener('astro:page-load', updateActiveLinks);
+	// Run after swup replaces content
+	document.addEventListener('swup:contentReplaced', updateActiveLinks);
+</script>
 <style>
+	@reference "../styles/global.css";
 	a {
 		display: inline-block;
 		text-decoration: none;
+		@apply transition-colors duration-200 text-accent-dark;
+		&:active, &:focus, &:hover {
+			@apply text-accent;
+		}
 	}
 	a.active {
-		font-weight: bolder;
+		font-weight: bold;
 		text-decoration: underline;
+		@apply text-accent;
 	}
 </style>
