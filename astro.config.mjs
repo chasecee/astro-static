@@ -8,6 +8,8 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  site: "https://astro-static-production.up.railway.app",
+
   integrations: [mdx(), sitemap(), showTailwindcssBreakpoint()],
 
   vite: {
